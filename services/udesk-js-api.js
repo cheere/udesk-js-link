@@ -1,9 +1,9 @@
 
 const DEFAULT_CONFIG = {
-  link: '',
   code: '',
+  link: '',
   im_user_key: '',
-  companyDomain: '',
+  company_domain: '',
 }
 
 export default class UdeskJSApi {
@@ -42,6 +42,6 @@ export default class UdeskJSApi {
   }
 
   static get companyDomain() {
-    return this.store.companyDomain || '';
+    return this.store.company_domain || '';
   }
 }

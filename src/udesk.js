@@ -2,8 +2,6 @@ import UdeskJSApi from '../services/udesk-js-api';
 import getSignature from './signature';
 import queryWithParams from '../utils/query-with-params';
 
-const CompanyDomain =  UdeskJSApi.companyDomain || '';
-
 export default class UdeskJS {
 
   static get store() {
@@ -13,13 +11,12 @@ export default class UdeskJS {
     return this._store;
   }
 
-  static companyDomain() {
-    return CompanyDomain;
-  }
-
   static setCustomer(map) {
     if (!map || typeof map != 'object') {
-      throw new Error('js-udesk-link [UdeskJS] -> setCustomer(map) -> map=null');
+      console.log('js-udesk-link [UdeskJS] -> setCustomer(map) -> map=null');
+      this.store.customer = null;
+      this.store.customerUrl = '';
+      return;
     }
     let c_email = map.c_email;
     let c_phone = map.c_phone;
@@ -49,11 +46,12 @@ export default class UdeskJS {
   // 咨询对象
   static getProductUrl(map) {
     if (!map || typeof map != 'object') {
-      throw new Error('js-udesk-link [UdeskJS] -> getProductUrl(map) -> map=null');
+      console.log('js-udesk-link [UdeskJS] -> getProductUrl(map) -> map=null');
+      return '';
     }
 
     let product_title = map.product_title;
-    if (!product_title) {
+    if (typeof product_title === 'undefined') {
       throw new Error('js-udesk-link [UdeskJS] -> getProductUrl(map) -> product_title=null');
     }
     let url = queryWithParams(map);
@@ -63,11 +61,12 @@ export default class UdeskJS {
   // 咨询对象 - 自动添加前缀
   static getProductUrlAutoPrefix(map) {
     if (!map || typeof map != 'object') {
-      throw new Error('js-udesk-link [UdeskJS] -> getProductUrlAutoPrefix(map) -> map=null');
+      console.log('js-udesk-link [UdeskJS] -> getProductUrlAutoPrefix(map) -> map=null');
+      return ''
     }
 
     let title = map.title;
-    if (!title) {
+    if (typeof title === 'undefined') {
       throw new Error('js-udesk-link [UdeskJS] -> getProductUrlAutoPrefix(map) -> title=null');
     }
 
@@ -77,13 +76,14 @@ export default class UdeskJS {
       let p_value = map[key] || '';
       productMap[p_key] = p_value;
     }
-    this.getProductUrl(productMap)
+    return this.getProductUrl(productMap)
   }
 
   // 工单信息
   static getTicketUrl(map) {
     if (!map || typeof map != 'object') {
-      throw new Error('js-udesk-link [UdeskJS] -> getTicketUrl(map) -> map=null');
+      console.log('js-udesk-link [UdeskJS] -> getTicketUrl(map) -> map=null');
+      return ''
     }
 
     let t_priority_id = map.t_priority_id;
@@ -94,6 +94,17 @@ export default class UdeskJS {
     return url;
   }
 
+  static getNoneProductUrl() {
+    let map = {
+      title: " ",
+      url: " ",
+      image: " ",
+      send: false
+    }
+    let url = this.getProductUrlAutoPrefix(map);
+    return url;
+  }
+
   static toServiceIM(url) {
     url = url || ''
     if (url) url = '&' + url;
@@ -101,20 +112,23 @@ export default class UdeskJS {
     if (customerUrl) {
       customerUrl = '&' + customerUrl;
     }
-    let lastUrl = UdeskJSApi.link + customerUrl + url;
+    let c_cf_站点来源 = document.origin;
+    let lastUrl = UdeskJSApi.link + customerUrl + url + '&c_cf_站点来源=' + c_cf_站点来源;
     this.UdeskGotoUrl(lastUrl)
   }
 
   // 自定义搜索关键词 - 第三方网站链接示例（如：公司官网）
   static websiteToSearch(word) {
+    let companyDomain = UdeskJSApi.companyDomain || '';
     word = word || '';
-    let url = 'https://www.'+ CompanyDomain +'.com?udesk_wd=' + word;
+    let url = 'https://www.'+ companyDomain +'.com?udesk_wd=' + word;
     this.UdeskGotoUrl(url)
   }
   // 自定义搜索关键词 - 网页插件链接示例
   static plugInToSearch(word) {
+    let companyDomain = UdeskJSApi.companyDomain || '';
     word = word || '';
-    let url = 'https://'+ CompanyDomain +'.udesk.cn/im_client/?udesk_wd=' + word;
+    let url = 'https://'+ companyDomain +'.udesk.cn/im_client/?udesk_wd=' + word;
     this.UdeskGotoUrl(url)
   }
 

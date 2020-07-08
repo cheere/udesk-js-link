@@ -1,4 +1,4 @@
-
+/* eslint-disable */
 const sdkName = 'udesk-js-link'
 
 function getEnv() {
@@ -56,3 +56,5 @@ export default class JSLOG {
     
   }
 }
+
+/* eslint-disable */

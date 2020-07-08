@@ -1,3 +1,6 @@
+
+/* eslint-disable */
+
 function encodeUTF8(s) {
   s = s || '';
   if (typeof s !== 'string') s = '' + s;
@@ -51,3 +54,6 @@ export function sha1(s) {
   }).join("");
   return hex;
 }
+
+
+/* eslint-disable */

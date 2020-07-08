@@ -11,6 +11,11 @@ export default class UdeskJS {
     return this._store;
   }
 
+  static clearCustomer() {
+    this.store.customer = null;
+    this.store.customerUrl = '';
+  }
+
   static setCustomer(map) {
     if (!map || typeof map != 'object') {
       console.log('js-udesk-link [UdeskJS] -> setCustomer(map) -> map=null');

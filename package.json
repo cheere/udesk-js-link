@@ -1,10 +1,12 @@
 
 {
   "name": "udesk-js-link",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Udesk link access mode",
   "main": "index.js",
   "scripts": {
+    "clean": "rimraf app/package/dist",
+    "build": "npm run clean && babel src -d lib --source-maps",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -15,7 +17,11 @@
   "author": "srxboys (https://github.com/srxboys)",
   "license": "MIT",
   "repository": {
-      "type": "git",
-      "url": "git@github.com:cheere/udesk-js-link.git"
+    "type": "git",
+    "url": "git@github.com:cheere/udesk-js-link.git"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "rimraf": "^3.0.2"
   }
 }
